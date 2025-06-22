@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="allureReport">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libAllureReport/allure-model-2.24.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libAllureReport/jcommander-1.72.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libAllureReport/allure-testng-2.24.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libAllureReport/allure-test-filter-2.24.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libAllureReport/slf4j-api-1.7.36.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libAllureReport/bsh-2.0b6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libAllureReport/allure-java-commons-2.24.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libAllureReport/aspectjweaver-1.9.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

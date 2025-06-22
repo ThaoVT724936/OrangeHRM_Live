@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="library">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/librariesSelenium/commons-lang3-3.17.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/librariesSelenium/log4j-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/librariesSelenium/selenium-server-4.20.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/librariesSelenium/selenium-support-4.20.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/librariesSelenium/testng-7.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
