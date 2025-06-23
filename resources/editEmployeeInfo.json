@@ -1,4 +1,3 @@
-[
         {
         "editFirstName": "Ngô",
         "editMiddleName": "Lan",
@@ -9,16 +8,4 @@
         "editNationality": "German",
         "editMaritalStatus": "Married",
         "editDateOfBirth": "1990-09-12"
-        },
-        {
-                "editFirstName": "Ho",
-                "editMiddleName": "Van",
-                "editLastName": "Quan",
-                "editOtherID": "396793752",
-                "editDriverLicenseNumber": "D0689475938",
-                "editLicenseExpiryDate": "2036-12-30",
-                "editNationality": "Italy",
-                "editMaritalStatus": "Single",
-                "editDateOfBirth": "1996-09-12"
         }
-]

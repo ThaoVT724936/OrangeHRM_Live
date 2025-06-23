@@ -1,13 +1,10 @@
 package employeeData;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import commons.GlobalConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.testng.annotations.DataProvider;
 
 import java.io.File;
-import java.util.List;
 
 public class EditEmployeeInfoJson {
     @JsonProperty("editFirstName")
@@ -37,7 +34,7 @@ public class EditEmployeeInfoJson {
     @JsonProperty("editDateOfBirth")
     String editDateOfBirth;
 
-    public static EditEmployeeInfoJson getEditEmplyeeData(){
+    public static EditEmployeeInfoJson getEditEmployeeData(){
         try{
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(new File(GlobalConstants.JSON_DATA_PATH + "editEmployeeInfo.json")

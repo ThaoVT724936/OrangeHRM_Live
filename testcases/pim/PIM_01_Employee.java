@@ -1,18 +1,13 @@
 package pim;
 
-import commons.BasePage;
 import commons.BaseTest;
 import commons.GlobalConstants;
-
-import java.awt.*;
 
 import employeeData.AddEmployeeJson;
 import employeeData.EditEmployeeInfoJson;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -22,11 +17,8 @@ import pageObjects.PageGenerator;
 import pageObjects.pim.employee.AddNewEmployeePO;
 import pageObjects.pim.employee.EmployeeListPO;
 import pageObjects.pim.employee.PersonalDetailsPO;
-import pageUIs.CommonUI;
-import pageUIs.PIM.employee.PersonalDetailsUI;
 import ultilities.DBHelper;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,7 +48,7 @@ public class PIM_01_Employee extends BaseTest {
         LoginPage.enterPassword(GlobalConstants.password);
         DashboardPage = LoginPage.clickToLoginButton();
         addNewEmployeeData = AddEmployeeJson.getAddEmployeeData();
-        editEmployeeInfoData = EditEmployeeInfoJson.getEditEmplyeeData();
+        editEmployeeInfoData = EditEmployeeInfoJson.getEditEmployeeData();
     }
     @Test
     public void Employee_01_AddNewEmployee(){
@@ -96,8 +88,8 @@ public class PIM_01_Employee extends BaseTest {
 
     }
 
-    @Test (dataProvider = "editEmployeeData", dataProviderClass = EditEmployeeInfoJson.class)
-    public void Employee_03_Edit_Personal_Details(EditEmployeeInfoJson emp) throws SQLException {
+    @Test
+    public void Employee_03_Edit_Personal_Details() {
         PersonalDetailsPage.openPersonalDetails(driver);
         PersonalDetailsPage.waitForIconLoadingDisappear(driver);
         PersonalDetailsPage.enterEmployeeInfo(editEmployeeInfoData);

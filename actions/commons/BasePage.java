@@ -47,14 +47,10 @@ public class BasePage {
         return getElement(driver,locator).isEnabled();
     }
 
-    public void checkToCheckbox(WebDriver driver, String locator){
+    public void checkToCheckboxAndRadio(WebDriver driver, String locator){
         if(!getElement(driver,locator).isSelected()){
             getElement(driver,locator).click();
         }
-    }
-
-    public void checkToRadio(WebDriver driver, String locator){
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();",getElement(driver,locator));
     }
 
     public void uncheckToCheckboxRadio(WebDriver driver, String locator){

@@ -194,7 +194,7 @@ public class PersonalDetailsPO extends SidebarEmployeePO{
     @Step("Select radio GenderMale to edit")
     public void selectRadioGenderMale() {
         waitForElementClickable(driver,PersonalDetailsUI.GENDER_MALE_FOR_CLICK);
-        checkToRadio(driver,PersonalDetailsUI.GENDER_MALE_FOR_CLICK);
+        checkToCheckboxAndRadio(driver,PersonalDetailsUI.GENDER_MALE_FOR_CLICK);
     }
 
     @Step("Click to Save Info button")
