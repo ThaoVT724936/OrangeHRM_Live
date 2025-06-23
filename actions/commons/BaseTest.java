@@ -11,22 +11,27 @@ import java.time.Duration;
 public class BaseTest {
     private WebDriver driver;
     public WebDriver getBrowserName(String browserName, String url) {
-        BrowserList browserList = BrowserList.valueOf(browserName.toUpperCase());
-        switch (browserList){
-            case FIREFOX:
-                driver = new FirefoxDriver();
-                break;
-            case CHROME:
-                driver = new ChromeDriver();
-                break;
-            case EDGE:
-                driver = new EdgeDriver();
-                break;
-            case SAFARI:
-                driver = new SafariDriver();
-                break;
-            default:
-                throw new RuntimeException("Browser is not supported!!!");
+        try {
+            BrowserList browserList = BrowserList.valueOf(browserName.toUpperCase());
+            switch (browserList){
+                case FIREFOX:
+                    driver = new FirefoxDriver();
+                    break;
+                case CHROME:
+                    driver = new ChromeDriver();
+                    break;
+                case EDGE:
+                    driver = new EdgeDriver();
+                    break;
+                case SAFARI:
+                    driver = new SafariDriver();
+                    break;
+                default:
+                    throw new RuntimeException("Browser is not supported!!!");
+            }
+        }
+        catch (Exception ex){
+            throw new RuntimeException("Browser is not supported!!!");
         }
         driver.get(url);
         driver.manage().window().maximize();
