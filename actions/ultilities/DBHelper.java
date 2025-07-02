@@ -19,8 +19,6 @@ public class DBHelper {
         return resultSet;
 }*/
 public static Connection cnn = null;
-public static PreparedStatement statement = null;
-
 public static Connection getConnection() throws SQLException {
         try {
             cnn = DriverManager.getConnection(GlobalConstants.DB_URL, GlobalConstants.USER, GlobalConstants.PASSWORD);

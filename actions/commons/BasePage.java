@@ -1,6 +1,7 @@
 package commons;
 
 import net.bytebuddy.implementation.bytecode.Throw;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.checkerframework.checker.units.qual.K;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -24,6 +25,11 @@ public class BasePage {
         getElement(driver,locator).click();
     }
 
+    public void clickToElement(WebDriver driver, String locator, String dynamicValue){
+        getElement(driver,getDynamicLocator(locator,dynamicValue)).click();
+    }
+
+
     public String getTextElement(WebDriver driver, String locator){
         return getElement(driver,locator).getText();
     }
@@ -41,6 +47,10 @@ public class BasePage {
 
     public boolean elementIsDisplayed(WebDriver driver, String locator){
         return getElement(driver,locator).isDisplayed();
+    }
+
+    public boolean elementIsDisplayed(WebDriver driver, String locator, String dynamicValue){
+        return getElement(driver,getDynamicLocator(locator,dynamicValue)).isDisplayed();
     }
 
     public boolean elementIsEnabled(WebDriver driver, String locator){
@@ -85,6 +95,12 @@ public class BasePage {
         new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
                 .until(ExpectedConditions.elementToBeClickable(getByLocator(locator)));
     }
+
+    public void waitForElementClickable(WebDriver driver, String locator, String dynamicValue){
+        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
+                .until(ExpectedConditions.elementToBeClickable(getByLocator(getDynamicLocator(locator,dynamicValue))));
+    }
+
     public void waitForElementVisible(WebDriver driver, String locator){
         new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
                 .until(ExpectedConditions.visibilityOfElementLocated(getByLocator(locator)));
@@ -107,6 +123,13 @@ public class BasePage {
         return driver.findElements(getByLocator(locator));
     }
 
+    public List<WebElement> getElements(WebDriver driver, String locator, String dynamicValue){
+        return driver.findElements(getByLocator(getDynamicLocator(locator,dynamicValue)));
+    }
+
+    public String getDynamicLocator(String locator, String... dynamicValue){
+        return String.format(locator,(Object[]) dynamicValue);
+    }
     public By getByLocator(String typeLocator){
         By by = null;
         if (typeLocator.toLowerCase().startsWith("css")){
@@ -187,5 +210,9 @@ public class BasePage {
         if(GlobalConstants.OS_NAME.toUpperCase().startsWith("MAC")){
             getElement(driver,locator).sendKeys(Keys.COMMAND + "a" + Keys.DELETE);
         }
+    }
+
+    public String randomNumber(){
+        return RandomStringUtils.randomNumeric(5);
     }
 }

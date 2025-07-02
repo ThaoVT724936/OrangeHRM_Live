@@ -4,20 +4,21 @@ import commons.BaseTest;
 import commons.GlobalConstants;
 
 import employeeData.AddEmployeeJson;
+import employeeData.ContactDetailsJson;
 import employeeData.EditEmployeeInfoJson;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pageObjects.DashboardPO;
 import pageObjects.LoginPO;
 import pageObjects.PageGenerator;
 import pageObjects.pim.employee.AddNewEmployeePO;
+import pageObjects.pim.employee.ContactDetailsPO;
 import pageObjects.pim.employee.EmployeeListPO;
 import pageObjects.pim.employee.PersonalDetailsPO;
 import ultilities.DBHelper;
+import ultilities.DataHelper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,13 +32,16 @@ public class PIM_01_Employee extends BaseTest {
     private EmployeeListPO EmployeeListPage;
     private AddNewEmployeePO AddNewEmployeePage;
     private PersonalDetailsPO PersonalDetailsPage;
+    private ContactDetailsPO ContactDetailsPage;
     private AddEmployeeJson addNewEmployeeData;
     private EditEmployeeInfoJson editEmployeeInfoData;
+    private ContactDetailsJson contactDetailsData;
     private String employeeID;
 
 
     private String avatar1 = GlobalConstants.UPLOAD_FILE + "image1.png";
     private String avatar2 = GlobalConstants.UPLOAD_FILE + "image2.png";
+    private String workEmail;
 
     @Parameters({"browser","url"})
     @BeforeClass
@@ -49,6 +53,9 @@ public class PIM_01_Employee extends BaseTest {
         DashboardPage = LoginPage.clickToLoginButton();
         addNewEmployeeData = AddEmployeeJson.getAddEmployeeData();
         editEmployeeInfoData = EditEmployeeInfoJson.getEditEmployeeData();
+        contactDetailsData = ContactDetailsJson.getContactDetailsData();
+        workEmail = contactDetailsData.getWorkEmail() + DataHelper.randomNumber() +"@gmail.com";
+
     }
     @Test
     public void Employee_01_AddNewEmployee(){
@@ -71,6 +78,10 @@ public class PIM_01_Employee extends BaseTest {
     }
     @Test
     public void Employee_02_UploadAvatar(){
+        EmployeeListPage = DashboardPage.clickToPIMPage(driver);
+        System.out.println(EmployeeListPage.getTotalPages());
+        PersonalDetailsPage = EmployeeListPage.clickToEditButtonInTable(employeeID);
+
         Dimension avatarSizeBefore = PersonalDetailsPage.getAvatarSize();
 
         PersonalDetailsPage.waitForIconLoadingDisappear(driver);
@@ -90,7 +101,9 @@ public class PIM_01_Employee extends BaseTest {
 
     @Test
     public void Employee_03_Edit_Personal_Details() {
-        PersonalDetailsPage.openPersonalDetails(driver);
+        EmployeeListPage = DashboardPage.clickToPIMPage(driver);
+        PersonalDetailsPage = EmployeeListPage.clickToEditButtonInTable(employeeID);
+
         PersonalDetailsPage.waitForIconLoadingDisappear(driver);
         PersonalDetailsPage.enterEmployeeInfo(editEmployeeInfoData);
         PersonalDetailsPage.selectRadioGenderMale();
@@ -154,35 +167,44 @@ public class PIM_01_Employee extends BaseTest {
             e.printStackTrace();
         }
 
-
-      /*  ResultSet rsEmployeeInfo = DBHelper.getConnection(sqlEmployeeInfo,PersonalDetailsPage.getEmployeeID());
-        ResultSet rsNationCode = DBHelper.getConnection(sqlNationCode,editEmployeeInfoData.getEditNationality());
-        rsNationCode.next();
-        while (rsEmployeeInfo.next()){
-            System.out.println(rsEmployeeInfo.getString("emp_firstname")+
-                    rsEmployeeInfo.getString("emp_middle_name")+
-                    rsEmployeeInfo.getString("emp_lastname")+
-                    rsEmployeeInfo.getString("emp_gender")+
-                    rsEmployeeInfo.getString("emp_birthday")+
-                    rsEmployeeInfo.getString("emp_marital_status")+
-                    rsEmployeeInfo.getString("emp_dri_lice_num")+
-                    rsEmployeeInfo.getString("emp_dri_lice_exp_date"));
-            Assert.assertEquals(rsEmployeeInfo.getString("emp_firstname"),editEmployeeInfoData.getEditFirstName());
-            Assert.assertEquals(rsEmployeeInfo.getString("emp_middle_name"),editEmployeeInfoData.getEditMiddleName());
-            Assert.assertEquals(rsEmployeeInfo.getString("emp_lastname"),editEmployeeInfoData.getEditLastName());
-            Assert.assertEquals(rsEmployeeInfo.getString("nation_code"),rsNationCode.getString("id"));
-            Assert.assertEquals(rsEmployeeInfo.getString("emp_gender"),PersonalDetailsPage.getGenderCode());
-            Assert.assertEquals(rsEmployeeInfo.getString("emp_birthday"),editEmployeeInfoData.getEditDateOfBirth());
-            Assert.assertEquals(rsEmployeeInfo.getString("emp_marital_status"),editEmployeeInfoData.getEditMaritalStatus());
-            Assert.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_num"),editEmployeeInfoData.getEditDriverLicenseNumber());
-            Assert.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_exp_date"),editEmployeeInfoData.getEditLicenseExpiryDate());
-
-        }*/
-
     }
+    @Test
+    public void Employee_04_Contact_Details() {
+        EmployeeListPage = DashboardPage.clickToPIMPage(driver);
+        PersonalDetailsPage = EmployeeListPage.clickToEditButtonInTable(EmployeeListPage.getFirstEmployeeIDInTable());
+
+        ContactDetailsPage = PersonalDetailsPage.openContactDetails(driver);
+        ContactDetailsPage.waitForIconLoadingDisappear(driver);
+        ContactDetailsPage.enterContactDetailsInfo(contactDetailsData);
+        ContactDetailsPage.enterWorkEmail(workEmail);
+        ContactDetailsPage.clickToSaveButton();
+
+        Assert.assertEquals(ContactDetailsPage.getSuccessMessage(driver), "Successfully Updated");
+
+        ContactDetailsPage.waitForIconLoadingDisappear(driver);
+
+        Assert.assertEquals(ContactDetailsPage.getStreet1(),contactDetailsData.getStreet1());
+        Assert.assertEquals(ContactDetailsPage.getStreet2(),contactDetailsData.getStreet2());
+        Assert.assertEquals(ContactDetailsPage.getCity(),contactDetailsData.getCity());
+        Assert.assertEquals(ContactDetailsPage.getStateProvince(),contactDetailsData.getStateProvince());
+        Assert.assertEquals(ContactDetailsPage.getZipPostalCode(),contactDetailsData.getZipPostalCode());
+        Assert.assertEquals(ContactDetailsPage.getCountry(),contactDetailsData.getCountry());
+        Assert.assertEquals(ContactDetailsPage.getHome(),contactDetailsData.getHome());
+        Assert.assertEquals(ContactDetailsPage.getMobile(),contactDetailsData.getMobile());
+        Assert.assertEquals(ContactDetailsPage.getWork(),contactDetailsData.getWork());
+        Assert.assertEquals(ContactDetailsPage.getWorkEmail(),workEmail);
+        Assert.assertEquals(ContactDetailsPage.getOtherEmail(),contactDetailsData.getOtherEmail());
+    }
+
 
    /* @AfterClass
     public void afterClass(){
         driver.quit();
     }*/
+
+    @AfterMethod
+    public void afterMethod(){
+        EmployeeListPage = DashboardPage.clickToPIMPage(driver);
+        EmployeeListPage.clickToDeleteButtonInTable(employeeID);
+    }
 }

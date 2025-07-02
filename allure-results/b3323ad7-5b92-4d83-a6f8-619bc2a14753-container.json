@@ -1,0 +1,1 @@
+{"uuid":"b3323ad7-5b92-4d83-a6f8-619bc2a14753","name":"pim.PIM_01_Employee","children":["2fc7ea47-79c0-4541-b0a2-22303582f1bd"],"befores":[{"name":"beforeClass","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1750865523759,"stop":1750865536004}],"afters":[],"start":1750865523697,"stop":1750865539920}

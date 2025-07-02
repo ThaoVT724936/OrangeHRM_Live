@@ -147,6 +147,7 @@ public class PersonalDetailsPO extends SidebarEmployeePO{
     @Step("Enter DriverLicenseNumber to edit: {0}")
     public void enterDriverLicenseNumber(String driverLicenseNumber) {
         waitForElementClickable(driver,PersonalDetailsUI.DRIVER_LICENSE_NUMBER);
+        clearValueInTextbox(driver,PersonalDetailsUI.DRIVER_LICENSE_NUMBER);
         sendkeyToElement(driver,PersonalDetailsUI.DRIVER_LICENSE_NUMBER,driverLicenseNumber);
 
     }
@@ -154,6 +155,7 @@ public class PersonalDetailsPO extends SidebarEmployeePO{
     @Step("Enter LicenseExpiryDate to edit: {0}")
     public void selectLicenseExpiryDate(String licenseExpire) {
         waitForElementClickable(driver,PersonalDetailsUI.LICENSE_EXPIRY_DATE);
+        clearValueInTextbox(driver,PersonalDetailsUI.LICENSE_EXPIRY_DATE);
         sendkeyToElement(driver,PersonalDetailsUI.LICENSE_EXPIRY_DATE,licenseExpire);
 
     }
@@ -177,6 +179,7 @@ public class PersonalDetailsPO extends SidebarEmployeePO{
     @Step("Enter DateOfBirth to edit: {0}")
     public void selectDateOfBirth(String dateOfBirth) {
         waitForElementClickable(driver,PersonalDetailsUI.DATE_OF_BIRTH);
+        clearValueInTextbox(driver,PersonalDetailsUI.DATE_OF_BIRTH);
         sendkeyToElement(driver,PersonalDetailsUI.DATE_OF_BIRTH,dateOfBirth);
     }
     @Step("Enter employee info for modify")
