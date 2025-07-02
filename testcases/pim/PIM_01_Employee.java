@@ -137,14 +137,6 @@ public class PIM_01_Employee extends BaseTest {
                         String nationCode = rsNationCode.getString("id");
                         try (ResultSet rsEmployeeInfo = statementEmployeeInfo.executeQuery()) {
                             while (rsEmployeeInfo.next()) {
-                                System.out.println(rsEmployeeInfo.getString("emp_firstname") +
-                                        rsEmployeeInfo.getString("emp_middle_name") +
-                                        rsEmployeeInfo.getString("emp_lastname") +
-                                        rsEmployeeInfo.getString("emp_gender") +
-                                        rsEmployeeInfo.getString("emp_birthday") +
-                                        rsEmployeeInfo.getString("emp_marital_status") +
-                                        rsEmployeeInfo.getString("emp_dri_lice_num") +
-                                        rsEmployeeInfo.getString("emp_dri_lice_exp_date"));
                                 Assert.assertEquals(rsEmployeeInfo.getString("emp_firstname"), editEmployeeInfoData.getEditFirstName());
                                 Assert.assertEquals(rsEmployeeInfo.getString("emp_middle_name"), editEmployeeInfoData.getEditMiddleName());
                                 Assert.assertEquals(rsEmployeeInfo.getString("emp_lastname"), editEmployeeInfoData.getEditLastName());
