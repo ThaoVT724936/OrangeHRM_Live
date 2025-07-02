@@ -196,14 +196,8 @@ public class PIM_01_Employee extends BaseTest {
         Assert.assertEquals(ContactDetailsPage.getOtherEmail(),contactDetailsData.getOtherEmail());
     }
 
-
-   /* @AfterClass
+    @AfterClass
     public void afterClass(){
-        driver.quit();
-    }*/
-
-    @AfterMethod
-    public void afterMethod(){
         EmployeeListPage = DashboardPage.clickToPIMPage(driver);
         EmployeeListPage.clickToDeleteButtonInTable(employeeID);
     }
