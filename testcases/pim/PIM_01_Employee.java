@@ -43,9 +43,9 @@ public class PIM_01_Employee extends BaseTest {
     private String avatar2 = GlobalConstants.UPLOAD_FILE + "image2.png";
     private String workEmail;
 
-    @Parameters({"browser","url"})
+    @Parameters({"browser", "url"})
     @BeforeClass
-    public void beforeClass(String browserName, String url){
+    public void beforeClass(String browserName, String url) {
         driver = getBrowserName(browserName, url);
         LoginPage = PageGenerator.getLoginPO(driver);
         LoginPage.enterUserName(GlobalConstants.userName);
@@ -54,11 +54,12 @@ public class PIM_01_Employee extends BaseTest {
         addNewEmployeeData = AddEmployeeJson.getAddEmployeeData();
         editEmployeeInfoData = EditEmployeeInfoJson.getEditEmployeeData();
         contactDetailsData = ContactDetailsJson.getContactDetailsData();
-        workEmail = contactDetailsData.getWorkEmail() + DataHelper.randomNumber() +"@gmail.com";
+        workEmail = contactDetailsData.getWorkEmail() + DataHelper.randomNumber() + "@gmail.com";
 
     }
+
     @Test
-    public void Employee_01_AddNewEmployee(){
+    public void Employee_01_AddNewEmployee() {
         EmployeeListPage = DashboardPage.clickToPIMPage(driver);
         AddNewEmployeePage = EmployeeListPage.clickToAddEmployeeTab();
         AddNewEmployeePage.enterFirstName(addNewEmployeeData.getFirstName());
@@ -70,14 +71,15 @@ public class PIM_01_Employee extends BaseTest {
 
         Assert.assertEquals(PersonalDetailsPage.getSuccessMessage(driver), "Successfully Saved");
 
-        Assert.assertEquals(addNewEmployeeData.getFirstName(),PersonalDetailsPage.getFirstName());
-        Assert.assertEquals(addNewEmployeeData.getMiddleName(),PersonalDetailsPage.getMiddleName());
-        Assert.assertEquals(addNewEmployeeData.getLastName(),PersonalDetailsPage.getLastName());
-        Assert.assertEquals(employeeID,PersonalDetailsPage.getEmployeeIDInDetail());
+        Assert.assertEquals(addNewEmployeeData.getFirstName(), PersonalDetailsPage.getFirstName());
+        Assert.assertEquals(addNewEmployeeData.getMiddleName(), PersonalDetailsPage.getMiddleName());
+        Assert.assertEquals(addNewEmployeeData.getLastName(), PersonalDetailsPage.getLastName());
+        Assert.assertEquals(employeeID, PersonalDetailsPage.getEmployeeIDInDetail());
 
     }
+
     @Test
-    public void Employee_02_UploadAvatar(){
+    public void Employee_02_UploadAvatar() {
         EmployeeListPage = DashboardPage.clickToPIMPage(driver);
         System.out.println(EmployeeListPage.getTotalPages());
         PersonalDetailsPage = EmployeeListPage.clickToEditButtonInTable(employeeID);
@@ -113,14 +115,14 @@ public class PIM_01_Employee extends BaseTest {
 
         PersonalDetailsPage.waitForIconLoadingDisappear(driver);
 
-        Assert.assertEquals(PersonalDetailsPage.getFirstName(),editEmployeeInfoData.getEditFirstName());
-        Assert.assertEquals(PersonalDetailsPage.getMiddleName(),editEmployeeInfoData.getEditMiddleName());
-        Assert.assertEquals(PersonalDetailsPage.getLastName(),editEmployeeInfoData.getEditLastName());
-        Assert.assertEquals(PersonalDetailsPage.getDriverLicenseNumber(),editEmployeeInfoData.getEditDriverLicenseNumber());
-        Assert.assertEquals(PersonalDetailsPage.getLicenseExpiryDate(),editEmployeeInfoData.getEditLicenseExpiryDate());
-        Assert.assertEquals(PersonalDetailsPage.getNationality(),editEmployeeInfoData.getEditNationality());
-        Assert.assertEquals(PersonalDetailsPage.getMaritalStatus(),editEmployeeInfoData.getEditMaritalStatus());
-        Assert.assertEquals(PersonalDetailsPage.getDateOfBirth(),editEmployeeInfoData.getEditDateOfBirth());
+        Assert.assertEquals(PersonalDetailsPage.getFirstName(), editEmployeeInfoData.getEditFirstName());
+        Assert.assertEquals(PersonalDetailsPage.getMiddleName(), editEmployeeInfoData.getEditMiddleName());
+        Assert.assertEquals(PersonalDetailsPage.getLastName(), editEmployeeInfoData.getEditLastName());
+        Assert.assertEquals(PersonalDetailsPage.getDriverLicenseNumber(), editEmployeeInfoData.getEditDriverLicenseNumber());
+        Assert.assertEquals(PersonalDetailsPage.getLicenseExpiryDate(), editEmployeeInfoData.getEditLicenseExpiryDate());
+        Assert.assertEquals(PersonalDetailsPage.getNationality(), editEmployeeInfoData.getEditNationality());
+        Assert.assertEquals(PersonalDetailsPage.getMaritalStatus(), editEmployeeInfoData.getEditMaritalStatus());
+        Assert.assertEquals(PersonalDetailsPage.getDateOfBirth(), editEmployeeInfoData.getEditDateOfBirth());
         Assert.assertTrue(PersonalDetailsPage.genderMaleIsSelected());
 
         String sqlEmployeeInfo = "Select * from hs_hr_employee where employee_id = ?";
@@ -128,38 +130,35 @@ public class PIM_01_Employee extends BaseTest {
         try (Connection cnn = DBHelper.getConnection();
              PreparedStatement statementNationCode = cnn.prepareStatement(sqlNationCode);
              PreparedStatement statementEmployeeInfo = cnn.prepareStatement(sqlEmployeeInfo);
-             )
-        {
-            statementNationCode.setString(1,editEmployeeInfoData.getEditNationality());
+        ) {
+            statementNationCode.setString(1, editEmployeeInfoData.getEditNationality());
             try (ResultSet rsNationCode = statementNationCode.executeQuery()) {
                 if (rsNationCode.next()) {
-                        statementEmployeeInfo.setString(1, PersonalDetailsPage.getEmployeeID());
-                        String nationCode = rsNationCode.getString("id");
-                        try (ResultSet rsEmployeeInfo = statementEmployeeInfo.executeQuery()) {
-                            while (rsEmployeeInfo.next()) {
-                                Assert.assertEquals(rsEmployeeInfo.getString("emp_firstname"), editEmployeeInfoData.getEditFirstName());
-                                Assert.assertEquals(rsEmployeeInfo.getString("emp_middle_name"), editEmployeeInfoData.getEditMiddleName());
-                                Assert.assertEquals(rsEmployeeInfo.getString("emp_lastname"), editEmployeeInfoData.getEditLastName());
-                                Assert.assertEquals(rsEmployeeInfo.getString("nation_code"), nationCode);
-                                Assert.assertEquals(rsEmployeeInfo.getString("emp_gender"), PersonalDetailsPage.getGenderCode());
-                                Assert.assertEquals(rsEmployeeInfo.getString("emp_birthday"), editEmployeeInfoData.getEditDateOfBirth());
-                                Assert.assertEquals(rsEmployeeInfo.getString("emp_marital_status"), editEmployeeInfoData.getEditMaritalStatus());
-                                Assert.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_num"), editEmployeeInfoData.getEditDriverLicenseNumber());
-                                Assert.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_exp_date"), editEmployeeInfoData.getEditLicenseExpiryDate());
-                            }
+                    statementEmployeeInfo.setString(1, PersonalDetailsPage.getEmployeeID());
+                    String nationCode = rsNationCode.getString("id");
+                    try (ResultSet rsEmployeeInfo = statementEmployeeInfo.executeQuery()) {
+                        while (rsEmployeeInfo.next()) {
+                            Assert.assertEquals(rsEmployeeInfo.getString("emp_firstname"), editEmployeeInfoData.getEditFirstName());
+                            Assert.assertEquals(rsEmployeeInfo.getString("emp_middle_name"), editEmployeeInfoData.getEditMiddleName());
+                            Assert.assertEquals(rsEmployeeInfo.getString("emp_lastname"), editEmployeeInfoData.getEditLastName());
+                            Assert.assertEquals(rsEmployeeInfo.getString("nation_code"), nationCode);
+                            Assert.assertEquals(rsEmployeeInfo.getString("emp_gender"), PersonalDetailsPage.getGenderCode());
+                            Assert.assertEquals(rsEmployeeInfo.getString("emp_birthday"), editEmployeeInfoData.getEditDateOfBirth());
+                            Assert.assertEquals(rsEmployeeInfo.getString("emp_marital_status"), editEmployeeInfoData.getEditMaritalStatus());
+                            Assert.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_num"), editEmployeeInfoData.getEditDriverLicenseNumber());
+                            Assert.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_exp_date"), editEmployeeInfoData.getEditLicenseExpiryDate());
                         }
-                }
-                else
-                {
+                    }
+                } else {
                     Assert.fail("National code not found!");
                 }
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
+
     @Test
     public void Employee_04_Contact_Details() {
         EmployeeListPage = DashboardPage.clickToPIMPage(driver);
@@ -175,21 +174,21 @@ public class PIM_01_Employee extends BaseTest {
 
         ContactDetailsPage.waitForIconLoadingDisappear(driver);
 
-        Assert.assertEquals(ContactDetailsPage.getStreet1(),contactDetailsData.getStreet1());
-        Assert.assertEquals(ContactDetailsPage.getStreet2(),contactDetailsData.getStreet2());
-        Assert.assertEquals(ContactDetailsPage.getCity(),contactDetailsData.getCity());
-        Assert.assertEquals(ContactDetailsPage.getStateProvince(),contactDetailsData.getStateProvince());
-        Assert.assertEquals(ContactDetailsPage.getZipPostalCode(),contactDetailsData.getZipPostalCode());
-        Assert.assertEquals(ContactDetailsPage.getCountry(),contactDetailsData.getCountry());
-        Assert.assertEquals(ContactDetailsPage.getHome(),contactDetailsData.getHome());
-        Assert.assertEquals(ContactDetailsPage.getMobile(),contactDetailsData.getMobile());
-        Assert.assertEquals(ContactDetailsPage.getWork(),contactDetailsData.getWork());
-        Assert.assertEquals(ContactDetailsPage.getWorkEmail(),workEmail);
-        Assert.assertEquals(ContactDetailsPage.getOtherEmail(),contactDetailsData.getOtherEmail());
+        Assert.assertEquals(ContactDetailsPage.getStreet1(), contactDetailsData.getStreet1());
+        Assert.assertEquals(ContactDetailsPage.getStreet2(), contactDetailsData.getStreet2());
+        Assert.assertEquals(ContactDetailsPage.getCity(), contactDetailsData.getCity());
+        Assert.assertEquals(ContactDetailsPage.getStateProvince(), contactDetailsData.getStateProvince());
+        Assert.assertEquals(ContactDetailsPage.getZipPostalCode(), contactDetailsData.getZipPostalCode());
+        Assert.assertEquals(ContactDetailsPage.getCountry(), contactDetailsData.getCountry());
+        Assert.assertEquals(ContactDetailsPage.getHome(), contactDetailsData.getHome());
+        Assert.assertEquals(ContactDetailsPage.getMobile(), contactDetailsData.getMobile());
+        Assert.assertEquals(ContactDetailsPage.getWork(), contactDetailsData.getWork());
+        Assert.assertEquals(ContactDetailsPage.getWorkEmail(), workEmail);
+        Assert.assertEquals(ContactDetailsPage.getOtherEmail(), contactDetailsData.getOtherEmail());
     }
 
     @AfterClass
-    public void afterClass(){
+    public void afterClass() {
         EmployeeListPage = DashboardPage.clickToPIMPage(driver);
         EmployeeListPage.clickToDeleteButtonInTable(employeeID);
     }

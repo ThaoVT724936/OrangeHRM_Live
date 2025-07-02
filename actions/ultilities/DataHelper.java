@@ -12,5 +12,4 @@ public class DataHelper {
 public static String randomNumber(){
     return RandomStringUtils.randomNumeric(5);
 }
-
 }
