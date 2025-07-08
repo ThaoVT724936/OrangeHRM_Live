@@ -10,10 +10,11 @@ import java.time.Duration;
 
 public class BaseTest {
     private WebDriver driver;
+
     public WebDriver getBrowserName(String browserName, String url) {
         try {
             BrowserList browserList = BrowserList.valueOf(browserName.toUpperCase());
-            switch (browserList){
+            switch (browserList) {
                 case FIREFOX:
                     driver = new FirefoxDriver();
                     break;
@@ -29,8 +30,7 @@ public class BaseTest {
                 default:
                     throw new RuntimeException("Browser is not supported!!!");
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException("Browser is not supported!!!");
         }
         driver.get(url);
