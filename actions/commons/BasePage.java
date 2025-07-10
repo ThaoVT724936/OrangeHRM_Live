@@ -190,7 +190,7 @@ public class BasePage {
     }
 
     public void waitForIconLoadingDisappear(WebDriver driver){
-        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
+        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.SHORT_TIME))
                 .until(ExpectedConditions.invisibilityOfElementLocated(getByLocator(CommonUI.LOADING_ICON)));
     }
 

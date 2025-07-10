@@ -1,5 +1,6 @@
 package pim;
 
+import com.beust.ah.A;
 import commons.BaseTest;
 import commons.GlobalConstants;
 
@@ -17,6 +18,7 @@ import pageObjects.pim.employee.AddNewEmployeePO;
 import pageObjects.pim.employee.ContactDetailsPO;
 import pageObjects.pim.employee.EmployeeListPO;
 import pageObjects.pim.employee.PersonalDetailsPO;
+import ultilities.AssertHelper;
 import ultilities.DBHelper;
 import ultilities.DataHelper;
 
@@ -42,6 +44,8 @@ public class PIM_01_Employee extends BaseTest {
     private String avatar1 = GlobalConstants.UPLOAD_FILE + "image1.png";
     private String avatar2 = GlobalConstants.UPLOAD_FILE + "image2.png";
     private String workEmail;
+    private String sqlEmployeeInfo = "Select * from hs_hr_employee where employee_id = ?";
+
 
     @Parameters({"browser", "url"})
     @BeforeClass
@@ -54,7 +58,7 @@ public class PIM_01_Employee extends BaseTest {
         addNewEmployeeData = AddEmployeeJson.getAddEmployeeData();
         editEmployeeInfoData = EditEmployeeInfoJson.getEditEmployeeData();
         contactDetailsData = ContactDetailsJson.getContactDetailsData();
-        workEmail = contactDetailsData.getWorkEmail() + DataHelper.randomNumber() + "@gmail.com";
+        workEmail = !contactDetailsData.getWorkEmail().isEmpty() ? contactDetailsData.getWorkEmail() + DataHelper.randomNumber() + "@gmail.com" : "";
 
     }
 
@@ -75,6 +79,22 @@ public class PIM_01_Employee extends BaseTest {
         Assert.assertEquals(addNewEmployeeData.getMiddleName(), PersonalDetailsPage.getMiddleName());
         Assert.assertEquals(addNewEmployeeData.getLastName(), PersonalDetailsPage.getLastName());
         Assert.assertEquals(employeeID, PersonalDetailsPage.getEmployeeIDInDetail());
+
+        try (Connection connection = DBHelper.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sqlEmployeeInfo);
+        ){
+            stmt.setString(1,employeeID);
+            try (ResultSet resultSet = stmt.executeQuery()){
+                while (resultSet.next()){
+                    Assert.assertEquals(resultSet.getString("emp_firstname"),addNewEmployeeData.getFirstName());
+                    Assert.assertEquals(resultSet.getString("emp_middle_name"),addNewEmployeeData.getMiddleName());
+                    Assert.assertEquals(resultSet.getString("emp_lastname"),addNewEmployeeData.getLastName());
+                }
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
 
     }
 
@@ -125,7 +145,6 @@ public class PIM_01_Employee extends BaseTest {
         Assert.assertEquals(PersonalDetailsPage.getDateOfBirth(), editEmployeeInfoData.getEditDateOfBirth());
         Assert.assertTrue(PersonalDetailsPage.genderMaleIsSelected());
 
-        String sqlEmployeeInfo = "Select * from hs_hr_employee where employee_id = ?";
         String sqlNationCode = "Select * from ohrm_nationality where name = ?";
         try (Connection cnn = DBHelper.getConnection();
              PreparedStatement statementNationCode = cnn.prepareStatement(sqlNationCode);
@@ -138,15 +157,15 @@ public class PIM_01_Employee extends BaseTest {
                     String nationCode = rsNationCode.getString("id");
                     try (ResultSet rsEmployeeInfo = statementEmployeeInfo.executeQuery()) {
                         while (rsEmployeeInfo.next()) {
-                            Assert.assertEquals(rsEmployeeInfo.getString("emp_firstname"), editEmployeeInfoData.getEditFirstName());
-                            Assert.assertEquals(rsEmployeeInfo.getString("emp_middle_name"), editEmployeeInfoData.getEditMiddleName());
-                            Assert.assertEquals(rsEmployeeInfo.getString("emp_lastname"), editEmployeeInfoData.getEditLastName());
-                            Assert.assertEquals(rsEmployeeInfo.getString("nation_code"), nationCode);
-                            Assert.assertEquals(rsEmployeeInfo.getString("emp_gender"), PersonalDetailsPage.getGenderCode());
-                            Assert.assertEquals(rsEmployeeInfo.getString("emp_birthday"), editEmployeeInfoData.getEditDateOfBirth());
-                            Assert.assertEquals(rsEmployeeInfo.getString("emp_marital_status"), editEmployeeInfoData.getEditMaritalStatus());
-                            Assert.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_num"), editEmployeeInfoData.getEditDriverLicenseNumber());
-                            Assert.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_exp_date"), editEmployeeInfoData.getEditLicenseExpiryDate());
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("emp_firstname"), editEmployeeInfoData.getEditFirstName());
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("emp_middle_name"), editEmployeeInfoData.getEditMiddleName());
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("emp_lastname"), editEmployeeInfoData.getEditLastName());
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("nation_code"), nationCode);
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("emp_gender"), PersonalDetailsPage.getGenderCode());
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("emp_birthday"), editEmployeeInfoData.getEditDateOfBirth());
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("emp_marital_status"), editEmployeeInfoData.getEditMaritalStatus());
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_num"), editEmployeeInfoData.getEditDriverLicenseNumber());
+                            AssertHelper.assertEquals(rsEmployeeInfo.getString("emp_dri_lice_exp_date"), editEmployeeInfoData.getEditLicenseExpiryDate());
                         }
                     }
                 } else {
@@ -156,13 +175,12 @@ public class PIM_01_Employee extends BaseTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     @Test
     public void Employee_04_Contact_Details() {
         EmployeeListPage = DashboardPage.clickToPIMPage(driver);
-        PersonalDetailsPage = EmployeeListPage.clickToEditButtonInTable(EmployeeListPage.getFirstEmployeeIDInTable());
+        PersonalDetailsPage = EmployeeListPage.clickToEditButtonInTable(employeeID);
 
         ContactDetailsPage = PersonalDetailsPage.openContactDetails(driver);
         ContactDetailsPage.waitForIconLoadingDisappear(driver);
@@ -185,6 +203,41 @@ public class PIM_01_Employee extends BaseTest {
         Assert.assertEquals(ContactDetailsPage.getWork(), contactDetailsData.getWork());
         Assert.assertEquals(ContactDetailsPage.getWorkEmail(), workEmail);
         Assert.assertEquals(ContactDetailsPage.getOtherEmail(), contactDetailsData.getOtherEmail());
+
+        String sqlCountryCode = "Select * from hs_hr_country where cou_name = ?";
+        try (Connection connection = DBHelper.getConnection();
+             PreparedStatement statementEmployeeInfo = connection.prepareStatement(sqlEmployeeInfo);
+             PreparedStatement statementCountryCode = connection.prepareStatement(sqlCountryCode);
+        ){
+            statementCountryCode.setString(1,contactDetailsData.getCountry());
+            try (ResultSet countryCodeResultSet = statementCountryCode.executeQuery()){
+                if (countryCodeResultSet.next()){
+                    statementEmployeeInfo.setString(1,employeeID);
+                    String countryCode = countryCodeResultSet.getString("cou_code");
+                    try (ResultSet employeeResultSet = statementEmployeeInfo.executeQuery()){
+                        while (employeeResultSet.next()){
+                            AssertHelper.assertEquals(employeeResultSet.getString("emp_street1"),contactDetailsData.getStreet1());
+                            AssertHelper.assertEquals(employeeResultSet.getString("emp_street2"),contactDetailsData.getStreet2());
+                            AssertHelper.assertEquals(employeeResultSet.getString("city_code"),contactDetailsData.getCity());
+                            AssertHelper.assertEquals(employeeResultSet.getString("provin_code"),contactDetailsData.getStateProvince());
+                            AssertHelper.assertEquals(employeeResultSet.getString("emp_zipcode"),contactDetailsData.getZipPostalCode());
+                            AssertHelper.assertEquals(employeeResultSet.getString("coun_code"), countryCode);
+                            AssertHelper.assertEquals(employeeResultSet.getString("emp_hm_telephone"),contactDetailsData.getHome());
+                            AssertHelper.assertEquals(employeeResultSet.getString("emp_mobile"),contactDetailsData.getMobile());
+                            AssertHelper.assertEquals(employeeResultSet.getString("emp_work_telephone"),contactDetailsData.getWork());
+                            AssertHelper.assertEquals(employeeResultSet.getString("emp_work_email"),workEmail);
+                            AssertHelper.assertEquals(employeeResultSet.getString("emp_oth_email"), contactDetailsData.getOtherEmail());
+                        }
+                    }
+                }
+                else {
+                    Assert.fail("Country code not found!");
+                }
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
     }
 
     @AfterClass
