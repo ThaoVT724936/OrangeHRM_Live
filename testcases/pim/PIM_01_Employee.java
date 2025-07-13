@@ -7,6 +7,9 @@ import commons.GlobalConstants;
 import employeeData.AddEmployeeJson;
 import employeeData.ContactDetailsJson;
 import employeeData.EditEmployeeInfoJson;
+import io.qameta.allure.Allure;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -22,12 +25,20 @@ import ultilities.AssertHelper;
 import ultilities.DBHelper;
 import ultilities.DataHelper;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.rmi.server.LogStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Comparator;
+
 
 public class PIM_01_Employee extends BaseTest {
+    private final Logger log = LogManager.getLogger(getClass());
     private WebDriver driver;
     private LoginPO LoginPage;
     private DashboardPO DashboardPage;
@@ -47,10 +58,10 @@ public class PIM_01_Employee extends BaseTest {
     private String sqlEmployeeInfo = "Select * from hs_hr_employee where employee_id = ?";
 
 
-    @Parameters({"browser", "url"})
+    @Parameters("browser")
     @BeforeClass
-    public void beforeClass(String browserName, String url) {
-        driver = getBrowserName(browserName, url);
+    public void beforeClass(String browserName) {
+        driver = getBrowserName(browserName);
         LoginPage = PageGenerator.getLoginPO(driver);
         LoginPage.enterUserName(GlobalConstants.userName);
         LoginPage.enterPassword(GlobalConstants.password);
@@ -64,22 +75,30 @@ public class PIM_01_Employee extends BaseTest {
 
     @Test
     public void Employee_01_AddNewEmployee() {
+        log.info("Init EmployeeListPage");
         EmployeeListPage = DashboardPage.clickToPIMPage(driver);
+        log.info("Init AddNewEmployeePage");
         AddNewEmployeePage = EmployeeListPage.clickToAddEmployeeTab();
+        log.info("Enter info");
         AddNewEmployeePage.enterFirstName(addNewEmployeeData.getFirstName());
         AddNewEmployeePage.enterMiddleName(addNewEmployeeData.getMiddleName());
         AddNewEmployeePage.enterLastName(addNewEmployeeData.getLastName());
         //AddNewEmployeePage.uploadAvatar(avatar1);
+        log.info("Assign value for employeeID");
         employeeID = AddNewEmployeePage.getEmployeeID();
+        log.info("Click Save button");
         PersonalDetailsPage = AddNewEmployeePage.clickToSaveButton();
 
+        log.info("Check success message is dislpayed");
         Assert.assertEquals(PersonalDetailsPage.getSuccessMessage(driver), "Successfully Saved");
 
+        log.info("Compare value in the screen with entered value");
         Assert.assertEquals(addNewEmployeeData.getFirstName(), PersonalDetailsPage.getFirstName());
         Assert.assertEquals(addNewEmployeeData.getMiddleName(), PersonalDetailsPage.getMiddleName());
         Assert.assertEquals(addNewEmployeeData.getLastName(), PersonalDetailsPage.getLastName());
         Assert.assertEquals(employeeID, PersonalDetailsPage.getEmployeeIDInDetail());
 
+        log.info("Compare entered value with DB");
         try (Connection connection = DBHelper.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sqlEmployeeInfo);
         ){
@@ -97,6 +116,7 @@ public class PIM_01_Employee extends BaseTest {
         }
 
     }
+/*
 
     @Test
     public void Employee_02_UploadAvatar() {
@@ -237,6 +257,21 @@ public class PIM_01_Employee extends BaseTest {
         }
         catch (SQLException ex){
             ex.printStackTrace();
+        }
+    }
+*/
+    @AfterMethod
+    public void afterMethod() throws IOException {
+        Path logDir = Paths.get("logs");
+        Path latestLogFile = Files.list(logDir)
+                .filter(Files::isRegularFile)
+                .max(Comparator.comparingLong(f -> f.toFile().lastModified()))
+                .orElse(null);
+
+        if (latestLogFile != null) {
+            Allure.addAttachment("Log File", new FileInputStream(latestLogFile.toFile()));
+        } else {
+            System.out.println("Không tìm thấy file log để attach vào Allure report.");
         }
     }
 

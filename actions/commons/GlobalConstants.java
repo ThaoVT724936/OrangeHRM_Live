@@ -7,6 +7,7 @@ public class GlobalConstants {
     public static final String OS_NAME = System.getProperty("os.name");
 
     //Login info
+    public static final String PAGE_URL = "http://localhost/orangehrm/web/index.php/auth/login";
     public static final String userName = "orange_hrm";
     public static final String password = "Orange@123456789";
 

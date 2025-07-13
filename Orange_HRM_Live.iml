@@ -16,5 +16,6 @@
     <orderEntry type="library" name="allureReport" level="project" />
     <orderEntry type="library" name="jacksonLib" level="project" />
     <orderEntry type="library" name="mysql-connector" level="project" />
+    <orderEntry type="library" name="libLog4j2" level="project" />
   </component>
 </module>
