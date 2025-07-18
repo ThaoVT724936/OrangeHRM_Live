@@ -6,10 +6,14 @@ import org.openqa.selenium.WebDriver;
 import pageUIs.PIM.employee.ContacDetailsUI;
 
 public class ContactDetailsPO extends SidebarEmployeePO{
+/*
     private WebDriver driver;
+*/
     public ContactDetailsPO(WebDriver driver){
         super(driver);
+/*
         this.driver = driver;
+*/
     }
 
     //get contact details

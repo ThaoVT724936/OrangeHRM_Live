@@ -1,0 +1,10 @@
+[13-07-2025 21:18:52.711 INFO pim.PIM_01_Employee] - Init EmployeeListPage
+[13-07-2025 21:18:56.544 INFO pim.PIM_01_Employee] - Init AddNewEmployeePage
+[13-07-2025 21:18:58.227 INFO pim.PIM_01_Employee] - Enter info
+[13-07-2025 21:18:58.903 INFO pim.PIM_01_Employee] - Assign value for employeeID
+[13-07-2025 21:18:58.940 INFO pim.PIM_01_Employee] - Click Save button
+[13-07-2025 21:19:00.416 INFO pim.PIM_01_Employee] - Check success message is dislpayed
+[13-07-2025 21:19:00.463 INFO pim.PIM_01_Employee] - Compare value in the screen with entered value
+[13-07-2025 21:19:00.650 INFO pim.PIM_01_Employee] - Compare entered value with DB
+[13-07-2025 21:19:01.192 INFO pim.PIM_01_Employee] - init EmployeeListPage
+[13-07-2025 21:19:01.817 INFO pim.PIM_01_Employee] - Delete employee

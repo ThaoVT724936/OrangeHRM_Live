@@ -6,9 +6,11 @@ import pageObjects.pim.employee.*;
 import pageUIs.LoginUI;
 
 public class LoginPO extends BasePage {
+/*
     private WebDriver driver;
+*/
     public LoginPO (WebDriver driver){
-        this.driver = driver;
+        super(driver);
     }
     public void enterUserName(String userName){
         waitForElementVisible(driver, LoginUI.USER_NAME_TEXTBOX);

@@ -10,12 +10,12 @@
             <class name="orange_HRM.Business.AdminPage"/>
         </classes>
     </test>-->
-    <test name="Run on Chrome">
+    <!--<test name="Run on Chrome">
         <parameter name="browser" value="chrome"></parameter>
         <classes>
             <class name="pim.PIM_01_Employee"/>
         </classes>
-    </test>
+    </test>-->
     <test name="Run on FireFox">
         <parameter name="browser" value="firefox"></parameter>
         <classes>

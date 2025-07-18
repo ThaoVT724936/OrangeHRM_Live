@@ -2,9 +2,14 @@ package pageObjects;
 
 import commons.BasePage;
 import org.openqa.selenium.WebDriver;
+import pageObjects.admin.UserManagementPO;
+import pageObjects.admin.organization.*;
 import pageObjects.pim.employee.*;
 
 public class PageGenerator extends BasePage {
+    public PageGenerator(WebDriver driver){
+        super(driver);
+    }
     public static LoginPO getLoginPO(WebDriver driver){
         return new LoginPO(driver);
     }
@@ -52,6 +57,28 @@ public class PageGenerator extends BasePage {
     }
     public static PimPO getPimPO(WebDriver driver){
         return new PimPO(driver);
+    }
+
+    //Dropdown Menu in admin.job
+    public static JobTitlesPO getJobTitlesPO(WebDriver driver){
+        return new JobTitlesPO(driver);
+    }
+    public static PayGradesPO getPayGradesPO(WebDriver driver){
+        return new PayGradesPO(driver);
+    }
+    public static EmploymentStatusPO getEmploymentStatusPO(WebDriver driver){
+        return new EmploymentStatusPO(driver);
+    }
+    public static JobCategoriesPO getJobCategoriesPO(WebDriver driver){
+        return new JobCategoriesPO(driver);
+    }
+    public static WorkShiftsPO getWorkShiftsPO(WebDriver driver){
+        return new WorkShiftsPO(driver);
+    }
+
+    //Dropdown Menu in admin.user management
+    public static UserManagementPO getUserManagementPO(WebDriver driver){
+        return new UserManagementPO(driver);
     }
 
 }

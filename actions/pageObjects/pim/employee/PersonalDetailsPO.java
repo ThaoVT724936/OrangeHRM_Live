@@ -13,10 +13,14 @@ import java.io.IOException;
 import java.util.ListResourceBundle;
 
 public class PersonalDetailsPO extends SidebarEmployeePO{
+/*
     private WebDriver driver;
+*/
     public PersonalDetailsPO(WebDriver driver){
         super(driver);
+/*
         this.driver = driver;
+*/
     }
     //get Info
     @Step("Get employeeID value")

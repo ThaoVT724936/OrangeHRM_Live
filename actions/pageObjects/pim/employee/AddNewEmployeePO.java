@@ -7,9 +7,14 @@ import pageObjects.PageGenerator;
 import pageUIs.PIM.employee.AddNewEmployeeUI;
 
 public class AddNewEmployeePO extends BasePage {
+/*
     private WebDriver driver;
+*/
     public AddNewEmployeePO(WebDriver driver){
+        super(driver);
+/*
         this.driver = driver;
+*/
     }
 
     @Step("Get EmployeeID value")

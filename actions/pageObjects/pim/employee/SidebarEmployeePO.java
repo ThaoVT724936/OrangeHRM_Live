@@ -7,9 +7,14 @@ import pageObjects.PageGenerator;
 import pageUIs.PIM.employee.SidebarEmployeeUI;
 
 public class SidebarEmployeePO extends BasePage {
+/*
     private WebDriver driver;
+*/
     public SidebarEmployeePO(WebDriver driver){
+        super(driver);
+/*
         this.driver = driver;
+*/
     }
 
     @Step("Init PersonalDetails Page")

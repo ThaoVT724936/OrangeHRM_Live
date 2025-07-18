@@ -20,6 +20,11 @@ import java.util.List;
 
 public class BasePage {
     protected WebDriver driver;
+    protected WebDriverWait explicitwait;
+    public BasePage(WebDriver driver){
+        this.driver = driver;
+        this.explicitwait = new WebDriverWait(driver,Duration.ofSeconds(GlobalConstants.LONG_TIME));
+    }
 
     public void clickToElement(WebDriver driver, String locator){
         getElement(driver,locator).click();
@@ -92,28 +97,23 @@ public class BasePage {
     }
 
     public void waitForElementClickable(WebDriver driver, String locator){
-        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
-                .until(ExpectedConditions.elementToBeClickable(getByLocator(locator)));
+        explicitwait.until(ExpectedConditions.elementToBeClickable(getByLocator(locator)));
     }
 
     public void waitForElementClickable(WebDriver driver, String locator, String dynamicValue){
-        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
-                .until(ExpectedConditions.elementToBeClickable(getByLocator(getDynamicLocator(locator,dynamicValue))));
+        explicitwait.until(ExpectedConditions.elementToBeClickable(getByLocator(getDynamicLocator(locator,dynamicValue))));
     }
 
     public void waitForElementVisible(WebDriver driver, String locator){
-        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
-                .until(ExpectedConditions.visibilityOfElementLocated(getByLocator(locator)));
+        explicitwait.until(ExpectedConditions.visibilityOfElementLocated(getByLocator(locator)));
     }
 
     public void waitForElementPresence(WebDriver driver, String locator){
-        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
-                .until(ExpectedConditions.presenceOfElementLocated(getByLocator(locator)));
+        explicitwait.until(ExpectedConditions.presenceOfElementLocated(getByLocator(locator)));
     }
 
     public void waitForElementInvisible(WebDriver driver, String locator){
-        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIME))
-                .until(ExpectedConditions.invisibilityOfElementLocated(getByLocator(locator)));
+        explicitwait.until(ExpectedConditions.invisibilityOfElementLocated(getByLocator(locator)));
     }
 
     public WebElement getElement(WebDriver driver, String locator){
@@ -172,11 +172,7 @@ public class BasePage {
         return getElement(driver, CommonUI.SUCCESS_MESSAGE).getText();
     }
     public void waitForAllIconLoadingDisappear(WebDriver driver){
-/*        List<WebElement> elements = getElements(driver,CommonUI.LOADING_ICON);
-        System.out.println("Số icon loading tìm thấy: " + elements.size());*/
-
-        new WebDriverWait(driver , Duration.ofSeconds(GlobalConstants.LONG_TIME))
-                .until(driver1 ->
+                explicitwait.until(driver1 ->
                         {
                             List<WebElement> elements = getElements(driver1,CommonUI.LOADING_ICON);
                             for (WebElement iconLoading: elements){
@@ -190,8 +186,7 @@ public class BasePage {
     }
 
     public void waitForIconLoadingDisappear(WebDriver driver){
-        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.SHORT_TIME))
-                .until(ExpectedConditions.invisibilityOfElementLocated(getByLocator(CommonUI.LOADING_ICON)));
+        explicitwait.until(ExpectedConditions.invisibilityOfElementLocated(getByLocator(CommonUI.LOADING_ICON)));
     }
 
     public void sleepInSeconds(long timeOfSleep){

@@ -11,10 +11,15 @@ import pageUIs.PIM.employee.PersonalDetailsUI;
 import java.util.List;
 
 public class EmployeeListPO extends BasePage {
+/*
     private WebDriver driver;
+*/
 
     public EmployeeListPO(WebDriver driver) {
+        super(driver);
+/*
         this.driver = driver;
+*/
     }
 
     public AddNewEmployeePO clickToAddEmployeeTab() {

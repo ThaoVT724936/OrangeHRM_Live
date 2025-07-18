@@ -7,9 +7,14 @@ import pageUIs.MainMenuUI;
 import pageUIs.PIM.employee.SidebarEmployeeUI;
 
 public class MainMenuPO extends BasePage {
+/*
     private WebDriver driver;
+*/
     public MainMenuPO(WebDriver driver){
+        super(driver);
+/*
         this.driver = driver;
+*/
     }
     public EmployeeListPO clickToPIMPage(WebDriver driver){
         waitForElementClickable(driver, MainMenuUI.PIM_MENU);

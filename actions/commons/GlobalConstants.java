@@ -26,5 +26,10 @@ public class GlobalConstants {
     public static final String USER = "root";
     public static final String PASSWORD = "";
 
+    //success message
+    public static final String SAVE_SUCCESS = "Successfully Saved";
+    public static final String UPDATE_SUCCESS = "Successfully Updated";
+
+
 
 }

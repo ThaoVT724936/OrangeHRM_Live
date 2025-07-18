@@ -90,7 +90,7 @@ public class PIM_01_Employee extends BaseTest {
         PersonalDetailsPage = AddNewEmployeePage.clickToSaveButton();
 
         log.info("Check success message is dislpayed");
-        Assert.assertEquals(PersonalDetailsPage.getSuccessMessage(driver), "Successfully Saved");
+        Assert.assertEquals(PersonalDetailsPage.getSuccessMessage(driver), GlobalConstants.SAVE_SUCCESS);
 
         log.info("Compare value in the screen with entered value");
         Assert.assertEquals(addNewEmployeeData.getFirstName(), PersonalDetailsPage.getFirstName());
@@ -114,9 +114,7 @@ public class PIM_01_Employee extends BaseTest {
         catch (SQLException ex){
             ex.printStackTrace();
         }
-
     }
-/*
 
     @Test
     public void Employee_02_UploadAvatar() {
@@ -131,7 +129,7 @@ public class PIM_01_Employee extends BaseTest {
         PersonalDetailsPage.uploadAvatar(avatar1);
         PersonalDetailsPage.clickToSaveImageButton();
 
-        Assert.assertEquals(PersonalDetailsPage.getSuccessMessage(driver), "Successfully Updated");
+        Assert.assertEquals(PersonalDetailsPage.getSuccessMessage(driver), GlobalConstants.UPDATE_SUCCESS);
 
         PersonalDetailsPage.waitForIconLoadingDisappear(driver);
         Dimension avatarSizeAfter = PersonalDetailsPage.getAvatarSize();
@@ -151,7 +149,7 @@ public class PIM_01_Employee extends BaseTest {
         PersonalDetailsPage.selectRadioGenderMale();
         PersonalDetailsPage.clickToSaveInfoButton();
 
-        Assert.assertEquals(PersonalDetailsPage.getSuccessMessage(driver), "Successfully Updated");
+        Assert.assertEquals(PersonalDetailsPage.getSuccessMessage(driver), GlobalConstants.UPDATE_SUCCESS);
 
         PersonalDetailsPage.waitForIconLoadingDisappear(driver);
 
@@ -208,7 +206,7 @@ public class PIM_01_Employee extends BaseTest {
         ContactDetailsPage.enterWorkEmail(workEmail);
         ContactDetailsPage.clickToSaveButton();
 
-        Assert.assertEquals(ContactDetailsPage.getSuccessMessage(driver), "Successfully Updated");
+        Assert.assertEquals(ContactDetailsPage.getSuccessMessage(driver), GlobalConstants.UPDATE_SUCCESS);
 
         ContactDetailsPage.waitForIconLoadingDisappear(driver);
 
@@ -259,7 +257,6 @@ public class PIM_01_Employee extends BaseTest {
             ex.printStackTrace();
         }
     }
-*/
     @AfterMethod
     public void afterMethod() throws IOException {
         Path logDir = Paths.get("logs");
@@ -277,7 +274,12 @@ public class PIM_01_Employee extends BaseTest {
 
     @AfterClass
     public void afterClass() {
+       /* System.out.println("EmployeeID is" + employeeID);
+        log.info("init EmployeeListPage");*/
         EmployeeListPage = DashboardPage.clickToPIMPage(driver);
+/*
+        log.info("Delete employee");
+*/
         EmployeeListPage.clickToDeleteButtonInTable(employeeID);
     }
 }
